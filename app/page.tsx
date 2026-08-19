@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { TerminalFeed } from "./TerminalFeed";
 import { HARDWARE } from "./hardwareData";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-const NAME = "Aiswarya";
+const NAME = "Aiswarya Satheesh";
 
 const SKILLS = [
   { group: "Cloud & Infra", items: ["CI/CD", "Docker", "Terraform", "AWS", "Kubernetes"] },
@@ -218,7 +219,14 @@ export default function Portfolio() {
   const [sent, setSent] = useState(false);
   const ids = ["home", "about", "experience", "projects", "hardware"];
   const [active, setActive] = useState("home");
-
+// const terminalRef = useRef<HTMLDivElement>(null);
+// const { scrollYProgress: terminalProgress } = useScroll({
+//   target: terminalRef,
+//   offset: ["start end", "start 55%"],
+// });
+// const terminalY = useTransform(terminalProgress, [0, 1], [140, 0]);
+// const terminalOpacity = useTransform(terminalProgress, [0, 1], [0, 1]);
+// const terminalScale = useTransform(terminalProgress, [0, 0.6, 1], [0.85, 1.12, 1]);
   useEffect(() => {
     const obs = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
@@ -237,7 +245,7 @@ export default function Portfolio() {
       <nav className="sticky top-0 z-20 backdrop-blur-md bg-[#150a1c]/80 border-b border-white/5">
   <div className="max-w-6xl mx-auto px-6 h-16 flex items-center gap-10">
     <span className="text-xl font-bold text-[#F3EAE0]">
-      Aiswarya
+      Aiswarya Satheesh
     </span>
     <div className="hidden md:flex gap-8 text-sm text-neutral-400">
       {["Home", "About", "Experience", "Projects", "Hardware"].map((n) => {
@@ -258,18 +266,22 @@ export default function Portfolio() {
 
       <main className="max-w-6xl mx-auto px-6">
         {/* hero */}
-        <section id="home" className="pt-32 pb-24">
-         
-
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <Reveal delay={100} className="w-full order-2 md:order-1">
-              <TerminalFeed />
+        <section id="home" className="pt-20 sm:pt-28 pb-24">
+          <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+            <Reveal delay={100} className="flex justify-center order-2 md:order-1">
+              <img
+                src="/monu.png"
+                alt="Illustration of Mona Lisa with cloud and DevOps tech icons"
+                className="w-56"
+              />
             </Reveal>
 
             <div className="order-1 md:order-2 text-left">
               <Reveal delay={150}>
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-[#F3EAE0] break-words">
-                  Hey! , I am <span className="text-[#F59E51]">{NAME}</span>
+                <h1 className="text-4xl sm:text-5xl font-extrabold text-[#F3EAE0] break-words leading-tight">
+                  Hey! , I am <span className="text-[#F59E51]">Aiswarya</span>
+                  <br />
+                 
                 </h1>
               </Reveal>
               <Reveal delay={250}>
@@ -282,8 +294,8 @@ export default function Portfolio() {
                   I build and manage infrastructure with AWS, networking, Linux, and automation by day, and spend my time exploring Terraform, Docker, DevOps, and ways to automate the work that keeps systems running.
                 </p>
               </Reveal>
-              <Reveal delay={450}>
-                <div className="flex gap-4 mt-9 flex-wrap">
+                           <Reveal delay={450}>
+                <div className="flex items-center gap-4 mt-9 flex-wrap">
                   <a href="mailto:aishuaiswarya2051@gmail.com"
                     className="bg-[#F59E51] text-[#2A1033] font-medium rounded-full px-6 py-3 text-sm hover:bg-[#F8D299] transition-colors inline-flex items-center gap-2"
                   >
@@ -291,12 +303,27 @@ export default function Portfolio() {
                       <rect x="3" y="5" width="18" height="14" rx="2" />
                       <path d="M3 7l9 6 9-6" />
                     </svg>
-                    Say hi!
+                    Connect
                   </a>
+                  <div className="flex items-center gap-3 ml-1">
+                    <a href="https://github.com/AiswaryaSatheesh1" target="_blank" rel="noreferrer" aria-label="GitHub" className="w-10 h-10 rounded-full border border-[#804A8A]/40 flex items-center justify-center text-neutral-400 hover:text-[#F59E51] hover:border-[#F59E51]/40 transition-colors">
+                      <IconGithub width={17} height={17} />
+                    </a>
+                    <a href="https://www.linkedin.com/in/aiswarya-satheesh1/" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="w-10 h-10 rounded-full border border-[#804A8A]/40 flex items-center justify-center text-neutral-400 hover:text-[#F59E51] hover:border-[#F59E51]/40 transition-colors">
+                      <IconLinkedin width={17} height={17} />
+                    </a>
+                    <a href="https://instagram.com/yourprofile" target="_blank" rel="noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full border border-[#804A8A]/40 flex items-center justify-center text-neutral-400 hover:text-[#F59E51] hover:border-[#F59E51]/40 transition-colors">
+                      <IconInstagram width={17} height={17} />
+                    </a>
+                  </div>
                 </div>
               </Reveal>
-            </div>
           </div>
+          </div>
+
+        <Reveal delay={550} className="w-full max-w-2xl mx-auto">
+  <TerminalFeed />
+</Reveal>
         </section>
 
         {/* about */}
@@ -339,7 +366,7 @@ export default function Portfolio() {
             <img
               src="/computer.png"
               alt="Retro CRT computer"
-              className="w-56"
+              className="w-full max-w-md"
             />
           </Reveal>
         </section>
@@ -402,7 +429,7 @@ export default function Portfolio() {
           <Reveal>
             <div className="flex items-baseline gap-4 mb-8">
               <span className="text-[#F59E51] text-2xl font-bold">/</span>
-              <h2 className="text-3xl font-bold text-[#F3EAE0]">software</h2>
+              <h2 className="text-3xl font-bold text-[#F3EAE0]">Works</h2>
               <div className="h-px bg-white/10 flex-1 ml-2" />
               <a href="https://github.com/AiswaryaSatheesh1" target="_blank" rel="noreferrer" className="text-[#F59E51] text-sm hover:text-[#F8D299] transition-colors whitespace-nowrap">
                 View all projects →
@@ -469,7 +496,7 @@ export default function Portfolio() {
           <Reveal>
             <div className="flex items-baseline gap-4 mb-8">
               <span className="text-[#F59E51] text-2xl font-bold">/</span>
-              <h2 className="text-3xl font-bold text-[#F3EAE0]">hardware</h2>
+              <h2 className="text-3xl font-bold text-[#F3EAE0]">Works</h2>
               <div className="h-px bg-white/10 flex-1 ml-2" />
             </div>
           </Reveal>
