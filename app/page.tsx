@@ -79,7 +79,7 @@ const SOFTWARE_PROJECTS = [
 
 /* ---------- scroll reveal ---------- */
 function useReveal() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const el = ref.current;
@@ -96,9 +96,17 @@ function useReveal() {
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
-  return [ref, visible];
+  return [ref, visible] as const;
 }
-function Reveal({ children, delay = 0, className = "" }) {
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   const [ref, visible] = useReveal();
   return (
     <div
@@ -115,27 +123,27 @@ function Reveal({ children, delay = 0, className = "" }) {
   );
 }
 
-const IconInstagram = (p) => (
+const IconInstagram = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" {...p}>
     <rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
   </svg>
 );
-const IconMail = (p) => (
+const IconMail = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" {...p}>
     <rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" />
   </svg>
 );
-const IconX = (p) => (
+const IconX = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" {...p}>
     <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" strokeWidth="1.8" />
   </svg>
 );
-const IconLinkedin = (p) => (
+const IconLinkedin = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" {...p}>
     <path d="M6.94 8.5H3.56V21h3.38V8.5zM5.25 3a1.97 1.97 0 1 0 0 3.94 1.97 1.97 0 0 0 0-3.94zM21 21h-3.37v-6.06c0-1.45-.03-3.31-2.02-3.31-2.02 0-2.33 1.58-2.33 3.2V21H9.9V8.5h3.24v1.71h.05c.45-.85 1.55-1.75 3.2-1.75 3.42 0 4.06 2.25 4.06 5.17V21z" />
   </svg>
 );
-const IconGithub = (p) => (
+const IconGithub = (p: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" {...p}>
     <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.9c-2.78.62-3.37-1.36-3.37-1.36-.46-1.2-1.11-1.52-1.11-1.52-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.34 1.12 2.91.86.09-.66.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.75-1.05 2.75-1.05.55 1.43.2 2.49.1 2.75.64.72 1.03 1.63 1.03 2.75 0 3.93-2.35 4.79-4.58 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2z" />
   </svg>
@@ -331,7 +339,7 @@ export default function Portfolio() {
             <img
               src="/computer.png"
               alt="Retro CRT computer"
-              className="w-72"
+              className="w-56"
             />
           </Reveal>
         </section>

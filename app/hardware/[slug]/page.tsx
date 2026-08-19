@@ -16,7 +16,7 @@ export default async function HardwareDetailPage({
   if (!item) return notFound();
 
   return (
-    <div className="min-h-screen bg-[#08070c] text-neutral-300 font-sans">
+    <div className="min-h-screen bg-[#150a1c] text-neutral-300 font-sans">
       {/* top bar */}
       <div className="max-w-3xl mx-auto px-6 pt-10 pb-2 flex items-center gap-4">
         <Link
@@ -32,7 +32,7 @@ export default async function HardwareDetailPage({
       </div>
 
       <main className="max-w-3xl mx-auto px-6 pb-24">
-        <h1 className="text-4xl sm:text-5xl font-bold text-neutral-50 mt-8 mb-8 leading-tight">
+        <h1 className="text-4xl sm:text-5xl font-bold text-[#F3EAE0] mt-8 mb-8 leading-tight">
           {item.title}
         </h1>
 
@@ -51,7 +51,7 @@ export default async function HardwareDetailPage({
 
         {item.parts && (
           <div className="mb-16">
-            <h2 className="text-xl font-bold text-neutral-50 mb-3">Components / Parts</h2>
+            <h2 className="text-xl font-bold text-[#F3EAE0] mb-3">Components / Parts</h2>
             <div className="h-px bg-white/10 mb-5" />
             <ul className="space-y-2">
               {item.parts.map((p) => (
@@ -66,7 +66,7 @@ export default async function HardwareDetailPage({
         <div className="space-y-16">
           {item.sections.map((s, i) => (
             <div key={i}>
-              <h2 className="text-xl font-bold text-neutral-50 mb-3">
+              <h2 className="text-xl font-bold text-[#F3EAE0] mb-3">
                 {i}. {s.heading}
               </h2>
               <div className="h-px bg-white/10 mb-5" />
