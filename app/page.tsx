@@ -258,7 +258,7 @@ export default function Portfolio() {
 
       <main className="max-w-6xl mx-auto px-6">
         {/* hero */}
-        <section id="home" className="pt-20 pb-24">
+        <section id="home" className="pt-32 pb-24">
          
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
