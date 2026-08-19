@@ -1,0 +1,113 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+type Line = { type: "cmd" | "out"; text: string };
+
+const SCRIPT: Line[] = [
+  { type: "cmd", text: "whoami" },
+  { type: "out", text: "aiswarya — cloud engineer" },
+  { type: "cmd", text: "echo $FOCUS" },
+  {
+    type: "out",
+    text: "Keeping infra clean — AWS, Azure, networking, identity — and building the software that extends it.",
+  },
+  { type: "cmd", text: "aws ec2 describe-instances --query 'Reservations[].Instances[].State.Name'" },
+  { type: "out", text: '["running", "running", "stopped"]' },
+  { type: "cmd", text: "terraform plan -out=tfplan" },
+  { type: "out", text: "Plan: 3 to add, 1 to change, 0 to destroy." },
+  { type: "cmd", text: "terraform apply tfplan" },
+  { type: "out", text: "Apply complete! Resources: 3 added, 1 changed." },
+  { type: "cmd", text: "kubectl get pods -n production" },
+  { type: "out", text: "api-gateway-7d4f   1/1   Running   0   2d" },
+  { type: "out", text: "worker-queue-2b1   1/1   Running   0   2d" },
+  { type: "cmd", text: "docker ps --format '{{.Names}}: {{.Status}}'" },
+  { type: "out", text: "nginx-proxy: Up 3 hours" },
+  { type: "cmd", text: "systemctl status nginx" },
+  { type: "out", text: "active (running) since Mon 09:14:02" },
+  { type: "cmd", text: "ping -c 3 8.8.8.8" },
+  { type: "out", text: "3 packets transmitted, 3 received, 0% loss" },
+  { type: "cmd", text: "chmod +x deploy.sh && ./deploy.sh --env=prod" },
+  { type: "out", text: "Deployment successful ✓" },
+];
+
+const TYPE_SPEED = 28; // ms per character
+const LINE_PAUSE = 260; // ms pause after a completed line
+const RESTART_PAUSE = 1400; // ms pause before looping back to the start
+const MAX_VISIBLE_LINES = 11;
+
+export function TerminalFeed({ className = "" }: { className?: string }) {
+  const [lines, setLines] = useState<string[]>([]);
+  const [current, setCurrent] = useState("");
+  const scriptIndex = useRef(0);
+  const charIndex = useRef(0);
+
+  useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+
+    const step = () => {
+      const line = SCRIPT[scriptIndex.current];
+      const prefix = line.type === "cmd" ? "$ " : "";
+
+      if (charIndex.current < line.text.length) {
+        charIndex.current += 1;
+        setCurrent(prefix + line.text.slice(0, charIndex.current));
+        timeout = setTimeout(step, TYPE_SPEED);
+      } else {
+        setLines((prev) => {
+          const next = [...prev, prefix + line.text];
+          return next.slice(-MAX_VISIBLE_LINES);
+        });
+        setCurrent("");
+        charIndex.current = 0;
+        scriptIndex.current += 1;
+
+        if (scriptIndex.current >= SCRIPT.length) {
+          scriptIndex.current = 0;
+          timeout = setTimeout(() => {
+            setLines([]);
+            timeout = setTimeout(step, TYPE_SPEED);
+          }, RESTART_PAUSE);
+        } else {
+          timeout = setTimeout(step, LINE_PAUSE);
+        }
+      }
+    };
+
+    timeout = setTimeout(step, TYPE_SPEED);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return (
+    <div
+      className={`text-left bg-[#0c0a14]/90 border border-[#804A8A]/25 rounded-xl overflow-hidden ${className}`}
+    >
+      <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/5 bg-white/[0.02]">
+        <span className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
+        <span className="w-2.5 h-2.5 rounded-full bg-amber-400/60" />
+        <span className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
+        <span className="ml-3 text-[11px] text-neutral-500 font-mono">aiswarya@cloud-ops: ~</span>
+      </div>
+      <div className="p-4 h-64 overflow-hidden font-mono text-[12px] leading-relaxed text-left">
+        {lines.map((l, i) => (
+          <div
+            key={i}
+            className={`whitespace-pre-wrap break-words ${
+              l.startsWith("$ ") ? "text-[#F8D299]" : "text-neutral-500"
+            }`}
+          >
+            {l}
+          </div>
+        ))}
+        <div
+          className={`whitespace-pre-wrap break-words ${
+            current.startsWith("$ ") ? "text-[#F8D299]" : "text-neutral-500"
+          }`}
+        >
+          {current}
+          <span className="inline-block w-[7px] h-[13px] bg-[#F59E51] ml-0.5 align-middle animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+}
